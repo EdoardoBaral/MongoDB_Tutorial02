@@ -1,11 +1,17 @@
+package om;
+
 import java.io.Serializable;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.morphia.annotations.Entity;
+import dev.morphia.annotations.Id;
 
+@Entity("customers") //Inutile se il nome della collection e della classe coincidono
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 3990790906982099175L;
 	
+	@Id //Il campo name agisce come primary key della collection
 	private String name;
 	private String company;
 	

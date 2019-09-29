@@ -7,12 +7,13 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import om.Customer;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
-public class Main
+public class MongoMain
 {
 	public static void main(String[] args) throws Exception
 	{
@@ -102,7 +103,7 @@ public class Main
 			{
 				Document doc = cursorCustomers.next();
 				System.out.println(i++ +") "+ doc.toJson());
-//				Customer c = mapper.readValue(doc.toJson(), Customer.class);
+//				om.Customer c = mapper.readValue(doc.toJson(), om.Customer.class);
 			}
 		}
 		
