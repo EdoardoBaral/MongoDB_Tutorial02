@@ -67,6 +67,32 @@ public class BookMorphiaConnector
 	}
 	
 	/**
+	 * Metodo che restituisce la lista dei libri dell'autore il cui nome viene passato come argomento
+	 * @param author: nome dell'autore
+	 * @return la lista dei libri di author
+	 */
+	public List<Book> getBooksByAuthor(String author)
+	{
+		List<Book> list = datastore.createQuery(Book.class).field("author").equal(author).find().toList();
+		return list;
+	}
+	
+	/**
+	 * Metodo che cerca e restituisce tutti i libri nella collection che presentano un prezzo compreso nell'intervallo tra
+	 * min e max, passati come argomento
+	 * @param min: estremo inferiore dell'intervallo di prezzo
+	 * @param max: estremo superiore dell'intervallo di prezzo
+	 * @return la lista di libri che presentano un prezzo compreso tra min e max inclusi
+	 */
+	public List<Book> getBooksByPrice(double min, double max)
+	{
+		Query<Book> query = datastore.find(Book.class);
+		query.and(query.criteria("price").greaterThanOrEq(min), query.criteria("price").lessThanOrEq(max));
+		List<Book> list = query.find().toList();
+		return list;
+	}
+	
+	/**
 	 * Metodo che permette di aggiornare il prezzo di un libro nella collection Books
 	 * @param title: titolo del libro da cercare
 	 * @param price: nuovo prezzo da assegnare al libro
