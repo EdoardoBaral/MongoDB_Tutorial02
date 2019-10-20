@@ -5,6 +5,8 @@ import om.Publisher;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class BookMorphiaConnectorTest
@@ -43,8 +45,17 @@ public class BookMorphiaConnectorTest
 		pub2.setName("Mondadori");
 		book2.setPublisher(pub2);
 		
+		Book book3 = new Book();
+		book3.setIsbn("9781565927624");
+		book3.setTitle("Learning Python");
+		book3.setAuthor("Thomas Jefferson");
+		book3.setCost(2.20);
+		
+		book3.setPublisher(pub2);
+		
 		assertEquals("9781565927186", connector.saveBook(book1));
 		assertEquals("9781565927623", connector.saveBook(book2));
+		assertEquals("9781565927624", connector.saveBook(book3));
 	}
 	
 	@Test
@@ -58,6 +69,40 @@ public class BookMorphiaConnectorTest
 		
 		// caso libro non trovato
 		assertNull(connector.getBookByTitle("Bibbia"));
+	}
+	
+	@Test
+	@Ignore
+	public void getBooksByAuthorTest()
+	{
+		BookMorphiaConnector connector = new BookMorphiaConnector();
+		
+		// caso autore trovato
+		List<Book> positiveList = connector.getBooksByAuthor("Tom Kirkman");
+		assertNotNull(positiveList);
+		assertFalse(positiveList.isEmpty());
+		assertEquals(2, positiveList.size());
+		
+		// caso autore non trovato
+		List<Book> negativeList = connector.getBooksByAuthor("Paolo Rossi");
+		assertNotNull(negativeList);
+		assertTrue(negativeList.isEmpty());
+	}
+	
+	@Test
+	@Ignore
+	public void getBooksByPrice()
+	{
+		BookMorphiaConnector connector = new BookMorphiaConnector();
+		
+		List<Book> positiveList = connector.getBooksByPrice(3.5, 4.5);
+		assertNotNull(positiveList);
+		assertFalse(positiveList.isEmpty());
+		assertEquals(2, positiveList.size());
+		
+		List<Book> negativeList = connector.getBooksByPrice(10, 15);
+		assertNotNull(negativeList);
+		assertTrue(negativeList.isEmpty());
 	}
 	
 	@Test
