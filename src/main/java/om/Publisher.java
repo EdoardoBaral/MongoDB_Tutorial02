@@ -1,54 +1,48 @@
 package om;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.morphia.annotations.Entity;
-import dev.morphia.annotations.Id;
-import dev.morphia.annotations.Reference;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Entity("Publishers")
+/**
+ * Publisher. Classe che permette la rappresentazione di una casa editrice e di tutti i suoi attributi.
+ *
+ * La rappresentazione testuale delle istanze di Publisher viene realizzata tramite l'utilizzo delle API di Jackson, che permette
+ * la conversione da oggetto Java a JSON e viceversa.
+ *
+ * @author Edoardo Baral
+ */
 public class Publisher
 {
-	@Id
 	private String name;
-	@Reference
-	@JsonIgnore
-	private List<Book> companionBooks;
 	
+	/**
+	 * Costruttore vuoto
+	 */
 	public Publisher()
-	{
-		companionBooks = new ArrayList<>();
-	}
+	{ }
 	
+	/**
+	 * Metodo che restituisce  il nome della casa editrice
+	 * @return il nome della casa editrice
+	 */
 	public String getName()
 	{
 		return name;
 	}
 	
+	/**
+	 * Metodo che permette di indicare un nome per la casa editrice
+	 * @param name: nome da assegnare alla casa editrice
+	 */
 	public void setName(String name)
 	{
 		this.name = name;
 	}
 	
-	public List<Book> getCompanionBooks()
-	{
-		return companionBooks;
-	}
-	
-	public void setCompanionBooks(List<Book> companionBooks)
-	{
-		this.companionBooks = companionBooks;
-	}
-	
-	public void addCompanionBook(Book book)
-	{
-		this.companionBooks.add(book);
-	}
-	
+	/**
+	 * Metodo che restituisce una rappresentazione testuale dell'oggetto Publisher in formato JSON
+	 * @return la rappresentazione testuale della casa editrice in JSON, null in caso di errore
+	 */
 	public String toString()
 	{
 		try
