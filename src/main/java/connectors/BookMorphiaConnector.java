@@ -6,11 +6,17 @@ import dev.morphia.Datastore;
 import dev.morphia.Key;
 import dev.morphia.Morphia;
 import dev.morphia.query.Query;
+import dev.morphia.query.Sort;
 import dev.morphia.query.UpdateOperations;
+import om.Author;
 import om.Book;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import static dev.morphia.aggregation.Group.grouping;
+import static dev.morphia.aggregation.Group.push;
 import static utils.ConnectionParams.DATABASE;
 import static utils.ConnectionParams.URI;
 
@@ -90,6 +96,33 @@ public class BookMorphiaConnector
 		query.and(query.criteria("price").greaterThanOrEq(min), query.criteria("price").lessThanOrEq(max));
 		List<Book> list = query.find().toList();
 		return list;
+	}
+	
+	/**
+	 * Metodo che raggruppa tutti i libri della collection ognuno all'interno di un oggetto che rappresenta il rispettivo
+	 * autore.
+	 *
+	 * A partire dalla collection Books, i libri vengono raggruppati per autore dopodiché vengono create delle nuove entità
+	 * Author in cui viene aggiunto un nuovo campo books; questo viene poi gestito come una lista e vi vengono inseriti
+	 * tutti i libri precedentemente suddivisi, a seconda dell'autore.
+	 * La lista degli autori viene poi ordinata in base all'identificativo (ovvero il nome).
+	 *
+	 * @return la lista di tutti gli autori ad ognuno dei quali sono associati i propri libri
+	 */
+	public List<Author> getBooksGroupByAuthor()
+	{
+		Iterator<Author> iterator = datastore.createAggregation(Book.class)
+											 .group("author", grouping("books", push("$ROOT")))
+											 .sort(Sort.ascending("_id"))
+											 .out(Author.class);
+
+		List<Author> result = new ArrayList<>();
+		while(iterator.hasNext())
+		{
+			result.add(iterator.next());
+		}
+
+		return result;
 	}
 	
 	/**
