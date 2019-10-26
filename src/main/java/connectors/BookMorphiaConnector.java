@@ -126,6 +126,28 @@ public class BookMorphiaConnector
 	}
 	
 	/**
+	 * Metodo che restituisce una lista di tutti i libri della collection ordinati alfabeticamente prima per nome
+	 * dell'autore e poi per titolo
+	 * @return una lista di tutti i libri della collection ordinati alfabeticamente prima per nome dell'autore e poi per titolo
+	 */
+	public List<Book> getBooksSortedByAuthorAndTitle()
+	{
+		List<Book> sortedist = datastore.find(Book.class).order(Sort.ascending("author")).order(Sort.ascending("title")).find().toList();
+		return sortedist;
+	}
+	
+	/**
+	 * Metodo che restituisce una prioezione dell'intera collezione di libri in cui, per ogni elemento, viene specificato
+	 * solamente il campo del titolo (oltre all'identificativo della collection, il codice ISBN, che viene popolato di default)
+	 * @return la lista di libri pordotta dalla proiezione per cui solo il titolo viene popolato
+	 */
+	public List<Book> getBooksProjection()
+	{
+		List<Book> list = datastore.find(Book.class).project("title", true).find().toList();
+		return list;
+	}
+	
+	/**
 	 * Metodo che permette di aggiornare il prezzo di un libro nella collection Books
 	 * @param title: titolo del libro da cercare
 	 * @param price: nuovo prezzo da assegnare al libro

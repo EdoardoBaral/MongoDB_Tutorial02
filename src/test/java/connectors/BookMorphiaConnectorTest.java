@@ -120,9 +120,23 @@ public class BookMorphiaConnectorTest
 	public void getBooksGroupByAuthorTest()
 	{
 		BookMorphiaConnector connector = new BookMorphiaConnector();
-		
-		List<Author> result = connector.getBooksGroupByAuthor();
-		assertNotNull(result);
+		assertNotNull(connector.getBooksGroupByAuthor());
+	}
+	
+	@Test
+	@Ignore
+	public void getBooksSortedByAuthorAndTitleTest()
+	{
+		BookMorphiaConnector connector = new BookMorphiaConnector();
+		assertNotNull(connector.getBooksSortedByAuthorAndTitle());
+	}
+	
+	@Test
+	@Ignore
+	public void getBooksProjectionTest()
+	{
+		BookMorphiaConnector connector = new BookMorphiaConnector();
+		assertNotNull(connector.getBooksProjection());
 	}
 	
 	@Test
