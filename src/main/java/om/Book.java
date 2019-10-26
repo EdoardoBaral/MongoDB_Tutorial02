@@ -2,17 +2,17 @@ package om;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.morphia.annotations.Embedded;
-import dev.morphia.annotations.Entity;
-import dev.morphia.annotations.Id;
-import dev.morphia.annotations.Property;
+import dev.morphia.annotations.*;
 
 /**
  * Book. Classe che permette di rappresentare un libro e tutti i suoi attributi.
  *
  * La classe è marcata con la Java Annotation @Entity("Books") in modo da mappare le istanze di questa classe su documenti
  * JSON archiviati nella collection Books.
- * L'elemento isbn viene utilizzato come identificativo dell'oggetto e, pertanto, viene marcato con la Java Annotation @Id.
+ * Viene imposta una validazione sullo schema JSON che impone che tutte le entità della collezction debbano avere un valore
+ * del campo price maggiore o uguale a zero.
+ * L'elemento isbn viene utilizzato come identificativo dell'oggetto e, pertanto, viene marcato con la Java Annotation @Id
+ * mentre l'attriuìbuto title viene indicizzato con un indice di univocità.
  * Tutti gli attributi della classe che vanno mappati su attributi omonimi nel JSON non presentano alcuna annotazione mentre
  * l'attributo cost, che va mappato sul campo price del JSON, presenta la Java Annotation @Property("price") prima della
  * dichiarazione dell'attributo nella classe Java.
@@ -26,10 +26,12 @@ import dev.morphia.annotations.Property;
  */
 
 @Entity("Books")
+@Validation("{ price: { $gte: 0 } }")
 public class Book
 {
 	@Id
 	private String isbn;
+	@Indexed(options = @IndexOptions(unique = true))
 	private String title;
 	private String author;
 	@Property("price")
